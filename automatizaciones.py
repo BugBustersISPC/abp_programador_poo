@@ -2,14 +2,33 @@ from datetime import datetime
 
 class Automatizaciones:
     def __init__(self, dispositivos):
-        self.dispositivos = dispositivos
-        self.hora_activacion_modo_noche = 23
+        self._dispositivos = dispositivos
+        self._hora_activacion_modo_noche = 23
 
+    # Getter
+    def get_dispositivos(self):
+        return self._dispositivos
+    def get_hora_activacion_modo_noche(self):
+        return self._hora_activacion_modo_noche
+   
+   # Setter
+    def set_dispositivos(self, dispositivos):
+        if isinstance(dispositivos, list):
+            self._dispositivos = dispositivos
+            return True
+        return False
+    def set_hora_activacion_modo_noche(self, nueva_hora: int):
+        if nueva_hora < 0 or nueva_hora > 23:
+            return False
+        self._hora_activacion_modo_noche = nueva_hora
+        return True
+    
+    # Funciones
     def consultar_automatizaciones(self):
-        luces_equipomusica = [dispositivo["estado"] for dispositivo in self.dispositivos if dispositivo["tipo"] in (2, 3)]
+        luces_equipomusica = [dispositivo["estado"] for dispositivo in self._dispositivos if dispositivo["tipo"] in (2, 3)]
         modo_fiesta = all(luces_equipomusica) if luces_equipomusica else False
 
-        camaras = [dispositivo["estado"] for dispositivo in self.dispositivos if dispositivo["tipo"] == 1]
+        camaras = [dispositivo["estado"] for dispositivo in self._dispositivos if dispositivo["tipo"] == 1]
         modo_noche = any(camaras) if camaras else False
 
         return modo_fiesta, modo_noche
@@ -22,26 +41,24 @@ class Automatizaciones:
 
     
     def activar_modo_fiesta(self):
-        for dispositivo in self.dispositivos:
+        for dispositivo in self._dispositivos:
             if dispositivo["tipo"] in [2, 3] and dispositivo["estado"] == False:
                 dispositivo["estado"] = True
         return "Modo Fiesta activado: Equipo de Musica y Luces encendidas."
     
     def apagar_modo_fiesta(self):
-        for dispositivo in self.dispositivos:
+        for dispositivo in self._dispositivos:
             if dispositivo["tipo"] in [2, 3] and dispositivo["estado"] == True:
                 dispositivo["estado"] = False
         return "Modo fiesta desactivado: Equipo de Musica y Luces apagadas."
     
     def activar_modo_noche(self):
-        for dispositivo in self.dispositivos:
-            if dispositivo["tipo"] in [2,3] and dispositivo["estado"] == True:
-                dispositivo["estado"] = False
+        for dispositivo in self._dispositivos:
             if dispositivo["tipo"] == 1 and dispositivo["estado"] == False:
                 dispositivo["estado"] = True
-        return "Modo noche activado: Camaras encendidas, equipo de musica y luces apagadas."
+        return "Modo noche activado: Camaras encendidas."
     def apagar_modo_noche(self):
-        for dispositivo in self.dispositivos:
+        for dispositivo in self._dispositivos:
             if dispositivo["tipo"] == 1 and dispositivo["estado"] == True:
                 dispositivo["estado"] = False
         return "Modo noche desactivado: Camaras apagadas."
@@ -49,7 +66,7 @@ class Automatizaciones:
     def configurar_hora_modo_noche(self, nueva_hora: int):
         if nueva_hora < 0 or nueva_hora > 23:
             return False
-        self.hora_activacion_modo_noche = nueva_hora
+        self._hora_activacion_modo_noche = nueva_hora
         return True
 
     def verificar_hora_modo_noche(self):
@@ -58,6 +75,6 @@ class Automatizaciones:
 
         if modo_fiesta or modo_noche:
             return False
-        if hora_actual != self.hora_activacion_modo_noche:
+        if hora_actual != self._hora_activacion_modo_noche:
             return False
         return True
