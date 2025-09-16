@@ -1,0 +1,17 @@
+# Archivos de caché y compilados de Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Entorno virtual
+venv/
+
+# Carpetas de herramientas y editores
+.vscode/
+.pytest_cache/
+
+
+# Archivos de sistema operativo (opcional pero recomendado)
+.DS_Store
+Thumbs.db
