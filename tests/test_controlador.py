@@ -1,42 +1,39 @@
-import unittest
+import pytest
 from dispositivo import Dispositivo, ControladorDispositivos
 
-class TestControladorDispositivos(unittest.TestCase):
+@pytest.fixture
+def controlador():
+    """crea y devuelve una nueva instancia de ControladorDispositivos para cada prueba"""
+    print("\nIniciando prueba...")
+    return ControladorDispositivos()
 
-    def setUp(self):
-        self.controlador = ControladorDispositivos()
-        print("\nIniciando prueba...")
+def test_agregar_dispositivo(controlador):
+    resultado = controlador.agregar_dispositivo("Luz Sala", Dispositivo.TIPO_LUZ, False)
+    assert resultado is True
+    assert controlador.buscar_por_nombre("Luz Sala") is not None
 
-    def test_agregar_dispositivo(self):
-        resultado = self.controlador.agregar_dispositivo("Luz Sala", Dispositivo.TIPO_LUZ, False)
-        self.assertTrue(resultado)
-        self.assertIsNotNone(self.controlador.buscar_por_nombre("Luz Sala"))
+def test_no_agregar_dispositivo_duplicado(controlador):
+    controlador.agregar_dispositivo("Luz Sala", Dispositivo.TIPO_LUZ, False)
+    resultado = controlador.agregar_dispositivo("Luz Sala", Dispositivo.TIPO_LUZ, True)
+    assert resultado is False  # Debe devolver False al intentar agregar un duplicado
 
-    def test_no_agregar_dispositivo_duplicado(self):
-        self.controlador.agregar_dispositivo("Luz Sala", Dispositivo.TIPO_LUZ, False)
-        resultado = self.controlador.agregar_dispositivo("Luz Sala", Dispositivo.TIPO_LUZ, True)
-        self.assertFalse(resultado) # Debe devolver False al intentar agregar un duplicado
+def test_buscar_dispositivo_existente(controlador):
+    controlador.agregar_dispositivo("Cámara Entrada", Dispositivo.TIPO_CAMARA, True)
+    dispositivo = controlador.buscar_por_nombre("Cámara Entrada")
+    assert dispositivo is not None
+    assert isinstance(dispositivo, Dispositivo)
+    assert dispositivo.nombre == "Cámara Entrada"
 
-    def test_buscar_dispositivo_existente(self):
-        self.controlador.agregar_dispositivo("Cámara Entrada", Dispositivo.TIPO_CAMARA, True)
-        dispositivo = self.controlador.buscar_por_nombre("Cámara Entrada")
-        self.assertIsNotNone(dispositivo)
-        self.assertIsInstance(dispositivo, Dispositivo)
-        self.assertEqual(dispositivo.nombre, "Cámara Entrada")
+def test_buscar_dispositivo_inexistente(controlador):
+    dispositivo = controlador.buscar_por_nombre("Dispositivo Fantasma")
+    assert dispositivo is None
 
-    def test_buscar_dispositivo_inexistente(self):
-        dispositivo = self.controlador.buscar_por_nombre("Dispositivo Fantasma")
-        self.assertIsNone(dispositivo)
-
-    def test_eliminar_dispositivo(self):
-        self.controlador.agregar_dispositivo("Música Patio", Dispositivo.TIPO_MUSICA, True)
-        resultado = self.controlador.eliminar_dispositivo("Música Patio")
-        self.assertTrue(resultado)
-        self.assertIsNone(self.controlador.buscar_por_nombre("Música Patio"))
-        
-    def test_eliminar_dispositivo_inexistente(self):
-        resultado = self.controlador.eliminar_dispositivo("Dispositivo Fantasma")
-        self.assertFalse(resultado)
-
-if __name__ == '__main__':
-    unittest.main()
+def test_eliminar_dispositivo(controlador):
+    controlador.agregar_dispositivo("Música Patio", Dispositivo.TIPO_MUSICA, True)
+    resultado = controlador.eliminar_dispositivo("Música Patio")
+    assert resultado is True
+    assert controlador.buscar_por_nombre("Música Patio") is None
+    
+def test_eliminar_dispositivo_inexistente(controlador):
+    resultado = controlador.eliminar_dispositivo("Dispositivo Fantasma")
+    assert resultado is False
