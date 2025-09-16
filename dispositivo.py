@@ -1,4 +1,3 @@
-
 class Dispositivo:
     """
     representa un dispositivo inteligente dentro del hogar
