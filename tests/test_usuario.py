@@ -1,5 +1,5 @@
 import pytest
-from usuario import Usuario, Rol
+from app.dominio.usuario import Usuario, Rol
 
 @pytest.fixture(autouse=True)
 def limpiar_usuarios():
