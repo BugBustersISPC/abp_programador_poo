@@ -41,8 +41,8 @@ VALUES
 
 INSERT INTO Dispositivo (Nombre, Marca, Modelo, Tipo, Estado, ID_usuario, ID_ubicacion, ID_automatizacion)
 VALUES 
-('Camara Entrada', 'Dahua', 'Cctv 1080p', 'CAMARA', 1, 1, 3, 1),
-('Luz Living', 'Philips', 'Hue-A19', 'LUZ', 0, 1, 2, 2),
+('Camara Entrada', 'Dahua', 'Cctv 1080p', 'CAMARA', 1, 1, 3, 2),
+('Luz Living', 'Philips', 'Hue-A19', 'LUZ', 0, 1, 2, 1),
 ('Torre de Sonido Comedor', 'Noblex', 'MNT290', 'MUSICA', 0, 2, 4, 1),
 ('Camara Living', 'TP-Link', 'Tapo C210', 'CAMARA', 1, 1, 2, 2),
 ('Barra Móvil Láser Patio', 'Spark', 'BARRA LASER', 'MUSICA', 1, 3, 5, 1);
