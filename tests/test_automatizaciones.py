@@ -1,5 +1,5 @@
-from automatizaciones import Automatizaciones
-from dispositivo import Dispositivo
+from app.dominio.automatizaciones import Automatizaciones
+from app.dominio.dispositivo import Dispositivo
 
 class TestAutomatizaciones:
     def setup_method(self):

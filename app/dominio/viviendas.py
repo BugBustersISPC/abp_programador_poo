@@ -1,5 +1,5 @@
 from typing import List, Optional
-from ubicacion import Ubicacion
+from app.dominio.ubicacion import Ubicacion
 
 class Vivienda:
     _viviendas: List["Vivienda"] = []  

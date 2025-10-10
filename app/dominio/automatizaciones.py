@@ -1,5 +1,5 @@
 from datetime import datetime
-from dispositivo import Dispositivo
+from app.dominio.dispositivo import Dispositivo
 
 class Automatizaciones:
     def __init__(self, dispositivos: list[Dispositivo]):

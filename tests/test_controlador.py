@@ -1,5 +1,5 @@
 import pytest
-from dispositivo import Dispositivo, ControladorDispositivos
+from app.dominio.dispositivo import Dispositivo, ControladorDispositivos
 
 @pytest.fixture
 def controlador():

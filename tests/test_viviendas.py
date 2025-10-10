@@ -1,6 +1,6 @@
 import pytest
-from viviendas import Vivienda
-from ubicacion import Ubicacion
+from app.dominio.viviendas import Vivienda
+from app.dominio.ubicacion import Ubicacion
 
 # Fixture para reiniciar la clase antes de cada test
 @pytest.fixture(autouse=True)
