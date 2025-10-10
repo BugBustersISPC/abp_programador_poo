@@ -1,5 +1,5 @@
 import pytest
-from dispositivo import Dispositivo
+from app.dominio.dispositivo import Dispositivo
 
 def test_creacion_dispositivo_valido():
     dispositivo = Dispositivo(nombre="Luz Living", tipo=Dispositivo.TIPO_LUZ, estado=False)

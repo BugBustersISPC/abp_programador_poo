@@ -1,4 +1,4 @@
-from ubicacion import Ubicacion
+from app.dominio.ubicacion import Ubicacion
 
 def test_creacion_de_ubicacion():
     """Prueba que una Ubicacion se crea con los valores iniciales correctos."""
