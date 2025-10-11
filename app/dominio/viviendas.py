@@ -5,14 +5,17 @@ class Vivienda:
     _viviendas: List["Vivienda"] = []  
     _contador_id = 1  
 
-    def __init__(self, nombre: str, direccion: str):
+    def __init__(self, nombre: str, direccion: str, id_vivienda: Optional[int] = None):
         if not nombre.strip():
             raise ValueError("El nombre de la vivienda no puede estar vacío.")
         if not direccion.strip():
             raise ValueError("La dirección de la vivienda no puede estar vacía.")
 
-        self._id_vivienda = Vivienda._contador_id
-        Vivienda._contador_id += 1
+        if id_vivienda is not None:
+            self._id_vivienda = id_vivienda
+        else:
+            self._id_vivienda = Vivienda._contador_id
+            Vivienda._contador_id += 1
 
         self._nombre = nombre.strip()
         self._direccion = direccion.strip()
