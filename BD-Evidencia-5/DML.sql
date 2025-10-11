@@ -9,14 +9,14 @@ VALUES ('Av. Pablo Bautista 2834'),
 ('Santa Rosa 5483'),
 ('Mon señor Jose Negro 5421');
 
-INSERT INTO usuario (Nombre, Apellido, Email, Nombre_rol, Contraseña) 
+INSERT INTO Usuario (Nombre, Apellido, Email, Nombre_rol, Contraseña) 
 VALUES ('Alvaro', 'Carmin', 'alvarocarmin@gmail.com', 'Admin', '421384'),
 ('Lucia', 'Carmin', 'luciacarmin@gmail.com', 'Usuario', '723456'),
 ('Lisandro', 'Carmin', 'lisandrocarmin@gmail.com', 'Dueño', '421384'),
 ('Catalina', 'Moreno', 'catalinamoreno@gmail.com', 'Usuario', '321347'),
 ('Juan', 'Perez', 'juanperez@gmail.com', 'Admin', '123543');
 
-INSERT INTO usuario_Vivienda (ID_usuario, ID_vivienda)
+INSERT INTO Usuario_Vivienda (ID_usuario, ID_vivienda)
 VALUES ('1', '1'), ('2', '2'),('3', '3'),('4', '4'),('5', '5');
 
 INSERT INTO Ubicacion (nombre_ubicacion, ID_vivienda)

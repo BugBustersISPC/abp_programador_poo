@@ -6,10 +6,13 @@ class Ubicacion:
         cls._contador_id += 1
         return cls._contador_id
     
-    def __init__(self, nombre: str):
-        self.id = self._generar_siguiente_id()
+    def __init__(self, nombre: str, id_vivienda:int, id_ubicacion:int = None):
+        if id_ubicacion is not None:
+            self.id = id_ubicacion
+        else:
+            self.id = self._generar_siguiente_id()
         self.nombre = nombre
-        
+        self.id_vivienda = id_vivienda
         self._dispositivos = []
 
     def agregar_dispositivo(self, nombre_dispositivo: str):
