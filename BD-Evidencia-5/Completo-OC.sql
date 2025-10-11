@@ -1,15 +1,20 @@
+----------------------------
+-- Practicas DDL SMARTHOME--
+----------------------------
+
 CREATE TABLE Usuario (
     ID_usuario INT PRIMARY KEY AUTO_INCREMENT,
     Nombre VARCHAR(30) NOT NULL,
     Apellido VARCHAR(30) NOT NULL,
     Email VARCHAR(40) NOT NULL UNIQUE,
-    Nombre_rol VARCHAR(15) NOT NULL,
-    Contraseña VARCHAR(20)
+    Nombre_rol ENUM('USUARIO', 'ADMIN') NOT NULL,
+    Contrasenia VARCHAR(100) NOT NULL
 );
 
 CREATE TABLE Vivienda (
     ID_vivienda INT PRIMARY KEY AUTO_INCREMENT,
-    Direccion VARCHAR(30) NOT NULL
+    Nombre VARCHAR(30) NOT NULL,
+    Direccion VARCHAR(50) NOT NULL
 );
 
 CREATE TABLE Usuario_Vivienda (
@@ -22,90 +27,84 @@ CREATE TABLE Usuario_Vivienda (
 
 CREATE TABLE Ubicacion (
     ID_ubicacion INT PRIMARY KEY AUTO_INCREMENT,
-    nombre_ubicacion VARCHAR(20) NOT NULL,
+    Nombre_ubicacion VARCHAR(30) NOT NULL,
     ID_vivienda INT NOT NULL,
     FOREIGN KEY (ID_vivienda) REFERENCES Vivienda(ID_vivienda)
 );
 
-CREATE TABLE Tipo_Dispositivo(
-    ID_tipo INT PRIMARY KEY AUTO_INCREMENT,
-    descripcion VARCHAR(50) NOT NULL
+CREATE TABLE Automatizacion (
+    ID_automatizacion INT PRIMARY KEY AUTO_INCREMENT,
+    Accion VARCHAR(30) NOT NULL,
+    Estado TINYINT(1) NOT NULL
 );
 
-CREATE TABLE Dispositivo(
+CREATE TABLE Dispositivo (
     ID_dispositivo INT PRIMARY KEY AUTO_INCREMENT,
     Nombre VARCHAR(25) NOT NULL,
     Marca VARCHAR(15),
     Modelo VARCHAR(25),
-    Estado TINYINT NOT NULL,
-    ID_tipo INT NOT NULL,
+    Tipo ENUM('LUZ', 'CAMARA', 'MUSICA') NOT NULL,
+    Estado TINYINT(1) NOT NULL,
     ID_usuario INT NOT NULL,
     ID_ubicacion INT NOT NULL,
-    FOREIGN KEY(ID_tipo) REFERENCES Tipo_Dispositivo(ID_tipo),
-    FOREIGN KEY(ID_usuario) REFERENCES Usuario(ID_usuario),
-    FOREIGN KEY(ID_ubicacion) REFERENCES Ubicacion(ID_ubicacion)
+    ID_automatizacion INT,
+    FOREIGN KEY (ID_usuario) REFERENCES Usuario(ID_usuario),
+    FOREIGN KEY (ID_ubicacion) REFERENCES Ubicacion(ID_ubicacion),
+    FOREIGN KEY (ID_automatizacion) REFERENCES Automatizacion(ID_automatizacion)
 );
 
-CREATE TABLE Automatizacion(
-    ID_automatizacion INT PRIMARY KEY AUTO_INCREMENT,
-    accion VARCHAR(30) NOT NULL,
-    estado TINYINT NOT NULL
-);
+------------------------------
+-- Practicas DML SMART HOME--
+------------------------------
 
-CREATE TABLE Registro_Acciones(
-    ID_acciones INT PRIMARY KEY AUTO_INCREMENT,
-    ID_dispositivo INT NOT NULL,
-    descripcion_accion VARCHAR(40),
-    fecha_hora DATETIME NOT NULL DEFAULT NOW(),
-    ID_automatizacion INT NOT NULL,
-    FOREIGN KEY(ID_dispositivo) REFERENCES Dispositivo(ID_dispositivo),
-    FOREIGN KEY(ID_automatizacion) REFERENCES Automatizacion(ID_automatizacion)
-);
-
-INSERT INTO vivienda (direccion) 
-VALUES ('Av. Pablo Bautista 2834'),
-('Av. Simon Bautista 4321'),
-('Av. Juan Carlos Bautista 3224'),
-('Santa Rosa 5483'),
-('Mon señor Jose Negro 5421');
-
-INSERT INTO usuario (Nombre, Apellido, Email, Nombre_rol, Contraseña) 
-VALUES ('Alvaro', 'Carmin', 'alvarocarmin@gmail.com', 'Admin', '421384'),
-('Lucia', 'Carmin', 'luciacarmin@gmail.com', 'Usuario', '723456'),
-('Lisandro', 'Carmin', 'lisandrocarmin@gmail.com', 'Dueño', '421384'),
-('Catalina', 'Moreno', 'catalinamoreno@gmail.com', 'Usuario', '321347'),
-('Juan', 'Perez', 'juanperez@gmail.com', 'Admin', '123543');
-
-INSERT INTO usuario_Vivienda (ID_usuario, ID_vivienda)
-VALUES ('1', '1'), ('2', '2'),('3', '3'),('4', '4'),('5', '5');
-
-INSERT INTO Ubicacion (nombre_ubicacion, ID_vivienda)
-VALUES ('Cocina', 1), ('Living', 1), ('Entrada', 1), ('Comedor', 2), ('Patio', 3);
-
-INSERT INTO Tipo_Dispositivo (descripcion)
-Values ('Camara'), ('Luz'), ('Equipo de Musica'); 
-
-INSERT INTO Dispositivo (Nombre, Marca, Modelo, Estado, ID_tipo, ID_usuario, ID_ubicacion)
-VALUES ('Camara Entrada', 'Dahua', 'Cctv 1080p', True, 1, 1, 1),
-('Luz Living', 'Philips', 'Hue-A19', False, 2, 1, 1),
-('Torre de Sonido Comedor', 'Noblex', 'MNT290', False, 3, 2, 2),
-('Camara living', 'TP-Link', 'Tapo C210', True, 1, 1, 1),
-('Barra Móvil Láser Patio', 'Spark', 'BARRA LASER', True, 3, 3, 3);
-
-INSERT INTO automatizacion (accion, estado)
-VALUES ('modo fiesta', '0'), ('modo noche', '0');
-
-INSERT INTO registro_acciones (id_dispositivo,descripcion_accion,fecha_hora,id_automatizacion)
+INSERT INTO Vivienda (Nombre, Direccion)
 VALUES 
-(1, 'Encendido por sensor de movimiento', '2025-09-14 20:45:00', 1),
-(2, 'Apagado automático por inactividad', '2025-09-14 21:00:00', 2),
-(3, 'Activación por modo noche', '2025-09-14 22:15:00', 2);
+('Casa Carmin 1', 'Av. Pablo Bautista 2834'),
+('Casa Carmin 2', 'Av. Simón Bautista 4321'),
+('Casa Carmin 3', 'Av. Juan Carlos Bautista 3224'),
+('Casa Moreno', 'Santa Rosa 5483'),
+('Casa Pérez', 'Monseñor José Negro 5421');
 
-SELECT * FROM vivienda;
-SELECT * FROM usuario;
-SELECT * FROM usuario_Vivienda;
+INSERT INTO Usuario (Nombre, Apellido, Email, Nombre_rol, Contrasenia)
+VALUES 
+('Alvaro', 'Carmin', 'alvarocarmin@gmail.com', 'ADMIN', '421384'),
+('Lucia', 'Carmin', 'luciacarmin@gmail.com', 'USUARIO', '723456'),
+('Lisandro', 'Carmin', 'lisandrocarmin@gmail.com', 'USUARIO', '421384'),
+('Catalina', 'Moreno', 'catalinamoreno@gmail.com', 'USUARIO', '321347'),
+('Juan', 'Perez', 'juanperez@gmail.com', 'ADMIN', '123543');
+
+INSERT INTO Usuario_Vivienda (ID_usuario, ID_vivienda)
+VALUES 
+(1, 1),
+(2, 2),
+(3, 3),
+(4, 4),
+(5, 5);
+
+INSERT INTO Ubicacion (Nombre_ubicacion, ID_vivienda)
+VALUES 
+('Cocina', 1),
+('Living', 1),
+('Entrada', 1),
+('Comedor', 2),
+('Patio', 3);
+
+INSERT INTO Automatizacion (Accion, Estado)
+VALUES 
+('Modo Fiesta', 0),
+('Modo Noche', 0);
+
+INSERT INTO Dispositivo (Nombre, Marca, Modelo, Tipo, Estado, ID_usuario, ID_ubicacion, ID_automatizacion)
+VALUES 
+('Camara Entrada', 'Dahua', 'Cctv 1080p', 'CAMARA', 1, 1, 3, 1),
+('Luz Living', 'Philips', 'Hue-A19', 'LUZ', 0, 1, 2, 2),
+('Torre de Sonido Comedor', 'Noblex', 'MNT290', 'MUSICA', 0, 2, 4, 1),
+('Camara Living', 'TP-Link', 'Tapo C210', 'CAMARA', 1, 1, 2, 2),
+('Barra Móvil Láser Patio', 'Spark', 'BARRA LASER', 'MUSICA', 1, 3, 5, 1);
+
+SELECT * FROM Vivienda;
+SELECT * FROM Usuario;
+SELECT * FROM Usuario_Vivienda;
 SELECT * FROM Ubicacion;
-SELECT * FROM Tipo_Dispositivo;
+SELECT * FROM Automatizacion;
 SELECT * FROM Dispositivo;
-SELECT * FROM automatizacion;
-SELECT * FROM registro_acciones;

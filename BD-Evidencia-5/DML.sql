@@ -2,12 +2,13 @@
 -- Practicas DML SMART HOME--
 ------------------------------
 
-INSERT INTO vivienda (direccion) 
-VALUES ('Av. Pablo Bautista 2834'),
-('Av. Simon Bautista 4321'),
-('Av. Juan Carlos Bautista 3224'),
-('Santa Rosa 5483'),
-('Mon señor Jose Negro 5421');
+INSERT INTO Vivienda (Nombre, Direccion)
+VALUES 
+('Casa Carmin 1', 'Av. Pablo Bautista 2834'),
+('Casa Carmin 2', 'Av. Simón Bautista 4321'),
+('Casa Carmin 3', 'Av. Juan Carlos Bautista 3224'),
+('Casa Moreno', 'Santa Rosa 5483'),
+('Casa Pérez', 'Monseñor José Negro 5421');
 
 INSERT INTO Usuario (Nombre, Apellido, Email, Nombre_rol, Contraseña) 
 VALUES ('Alvaro', 'Carmin', 'alvarocarmin@gmail.com', 'Admin', '421384'),
@@ -19,33 +20,30 @@ VALUES ('Alvaro', 'Carmin', 'alvarocarmin@gmail.com', 'Admin', '421384'),
 INSERT INTO Usuario_Vivienda (ID_usuario, ID_vivienda)
 VALUES ('1', '1'), ('2', '2'),('3', '3'),('4', '4'),('5', '5');
 
-INSERT INTO Ubicacion (nombre_ubicacion, ID_vivienda)
-VALUES ('Cocina', 1), ('Living', 1), ('Entrada', 1), ('Comedor', 2), ('Patio', 3);
-
-INSERT INTO Tipo_Dispositivo (descripcion)
-Values ('Camara'), ('Luz'), ('Equipo de Musica'); 
-
-INSERT INTO Dispositivo (Nombre, Marca, Modelo, Estado, ID_tipo, ID_usuario, ID_ubicacion)
-VALUES ('Camara Entrada', 'Dahua', 'Cctv 1080p', True, 1, 1, 1),
-('Luz Living', 'Philips', 'Hue-A19', False, 2, 1, 1),
-('Torre de Sonido Comedor', 'Noblex', 'MNT290', False, 3, 2, 2),
-('Camara living', 'TP-Link', 'Tapo C210', True, 1, 1, 1),
-('Barra Móvil Láser Patio', 'Spark', 'BARRA LASER', True, 3, 3, 3);
-
-INSERT INTO automatizacion (accion, estado)
-VALUES ('modo fiesta', '0'), ('modo noche', '0');
-
-INSERT INTO registro_acciones (id_dispositivo,descripcion_accion,fecha_hora,id_automatizacion)
+INSERT INTO Ubicacion (Nombre_ubicacion, ID_vivienda)
 VALUES 
-(1, 'Encendido por sensor de movimiento', '2025-09-14 20:45:00', 1),
-(2, 'Apagado automático por inactividad', '2025-09-14 21:00:00', 2),
-(3, 'Activación por modo noche', '2025-09-14 22:15:00', 2);
+('Cocina', 1),
+('Living', 1),
+('Entrada', 1),
+('Comedor', 2),
+('Patio', 3);
 
-SELECT * FROM vivienda;
-SELECT * FROM usuario;
-SELECT * FROM usuario_Vivienda;
+INSERT INTO Automatizacion (Accion, Estado)
+VALUES 
+('Modo Fiesta', 0),
+('Modo Noche', 0);
+
+INSERT INTO Dispositivo (Nombre, Marca, Modelo, Tipo, Estado, ID_usuario, ID_ubicacion, ID_automatizacion)
+VALUES 
+('Camara Entrada', 'Dahua', 'Cctv 1080p', 'CAMARA', 1, 1, 3, 2),
+('Luz Living', 'Philips', 'Hue-A19', 'LUZ', 0, 1, 2, 1),
+('Torre de Sonido Comedor', 'Noblex', 'MNT290', 'MUSICA', 0, 2, 4, 1),
+('Camara Living', 'TP-Link', 'Tapo C210', 'CAMARA', 1, 1, 2, 2),
+('Barra Móvil Láser Patio', 'Spark', 'BARRA LASER', 'MUSICA', 1, 3, 5, 1);
+
+SELECT * FROM Vivienda;
+SELECT * FROM Usuario;
+SELECT * FROM Usuario_Vivienda;
 SELECT * FROM Ubicacion;
-SELECT * FROM Tipo_Dispositivo;
+SELECT * FROM Automatizacion;
 SELECT * FROM Dispositivo;
-SELECT * FROM automatizacion;
-SELECT * FROM registro_acciones;
