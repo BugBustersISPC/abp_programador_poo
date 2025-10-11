@@ -42,7 +42,7 @@ def test_cambiar_nombre_vacio():
 # TEST 6: Agregar ubicación
 def test_agregar_ubicacion():
     v = Vivienda("Casa", "Calle")
-    ub = Ubicacion("Sala")
+    ub = Ubicacion("Sala", id_vivienda=5)
     resultado = v.agregar_ubicacion(ub)
     assert resultado
     assert "Sala" in v.get_ubicaciones()
@@ -50,7 +50,7 @@ def test_agregar_ubicacion():
 # TEST 7: No agregar ubicación duplicada
 def test_ubicacion_duplicada():
     v = Vivienda("Casa", "Calle")
-    ub = Ubicacion("Sala")
+    ub = Ubicacion("Sala", id_vivienda=4)
     v.agregar_ubicacion(ub)
     resultado = v.agregar_ubicacion(ub)
     assert not resultado
@@ -59,7 +59,7 @@ def test_ubicacion_duplicada():
 # TEST 8: Obtener ubicación
 def test_obtener_ubicacion():
     v = Vivienda("Casa", "Calle")
-    ub = Ubicacion("Cocina")
+    ub = Ubicacion("Cocina", id_vivienda=3)
     v.agregar_ubicacion(ub)
     encontrada = v.obtener_ubicacion("Cocina")
     assert encontrada is not None
@@ -68,7 +68,7 @@ def test_obtener_ubicacion():
 # TEST 9: Eliminar ubicación
 def test_eliminar_ubicacion():
     v = Vivienda("Casa", "Calle")
-    v.agregar_ubicacion(Ubicacion("Baño"))
+    v.agregar_ubicacion(Ubicacion("Baño", id_vivienda=2))
     resultado = v.eliminar_ubicacion("Baño")
     assert resultado
     assert "Baño" not in v.get_ubicaciones()
@@ -97,7 +97,7 @@ def test_eliminar_vivienda_no():
 def test_listar_viviendas():
     v1 = Vivienda("Casa 1", "Dir 1")
     v2 = Vivienda("Casa 2", "Dir 2")
-    v1.agregar_ubicacion(Ubicacion("Sala"))
+    v1.agregar_ubicacion(Ubicacion("Sala", id_vivienda=2))
     lista = Vivienda.listar_viviendas()
     assert len(lista) == 2
     assert lista[0]["nombre"] == "Casa 1"

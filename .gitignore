@@ -10,3 +10,8 @@ venv/
 # Carpetas de herramientas y editores
 .vscode/
 .pytest_cache/
+
+
+#Variables de entorno
+.env
+config.ini
