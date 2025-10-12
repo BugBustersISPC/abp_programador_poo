@@ -133,7 +133,7 @@ class ControladorDispositivos:
             print("Tipo inválido.")
             return False
 
-        data = {
+        da33333333333333333333333333333.............................333.......ta = {
             "Nombre": nombre,
             "Marca": marca,
             "Modelo": modelo,

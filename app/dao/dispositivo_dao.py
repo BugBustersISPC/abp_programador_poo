@@ -1,5 +1,4 @@
 from typing import List, Optional, Dict, Any, Tuple
-import mysql.connector
 
 from app.dao.interfaces.i_dispositivo_dao import IDispositivoDAO
 from app.conn.db_connection import DBConn  # ← usa tu clase DBConn
