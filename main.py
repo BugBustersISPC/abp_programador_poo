@@ -21,7 +21,7 @@ def registrar_usuario(usuario_dao: UsuarioDAO):
     # Verificar si ya existe
     existente = usuario_dao.get_by_email(email)
     if existente:
-        print("⚠️ Ese email ya está registrado.")
+        print("Ese email ya está registrado.")
         return
 
     usuario = Usuario(
@@ -34,7 +34,7 @@ def registrar_usuario(usuario_dao: UsuarioDAO):
     )
 
     id_nuevo = usuario_dao.create(usuario.to_object())
-    print(f"✅ Usuario registrado con ID: {id_nuevo}")
+    print(f" Usuario registrado con ID: {id_nuevo}")
 
 
 def iniciar_sesion(usuario_dao: UsuarioDAO):
@@ -53,7 +53,30 @@ def iniciar_sesion(usuario_dao: UsuarioDAO):
     else:
         print("Contraseña incorrecta.")
         return None
+    
 
+def menu_usuario(usuario:Usuario):
+    while True:
+        print(f"\n=== MENÚ DE USUARIO: {usuario._Usuario__nombre} ==")
+        print("1. Ver mis datos personales")
+        print("2. Cerrar sesión")
+
+        opcion = input("Selecciona una opción (1-2): ")
+
+        if opcion == '1':
+            print("\n📄 DATOS PERSONALES")
+            print(f"ID: {usuario.id_usuario}")
+            print(f"Nombre: {usuario._Usuario__nombre}")
+            print(f"Apellido: {usuario._Usuario__apellido}")
+            print(f"Email: {usuario._Usuario__email}")
+            print(f"Rol: {usuario._Usuario__rol}")
+
+
+        elif opcion == '2':
+            print(" Cerrando sesión...")
+            break
+        else:
+            print(" Opción inválida, intenta de nuevo.")
 
 def menu_principal():
     db = DBConn()
@@ -69,6 +92,7 @@ def menu_principal():
             usuario = iniciar_sesion(usuario_dao)
             if usuario:
                 print(f"\n Sesión iniciada como {usuario._Usuario__nombre}")
+                menu_usuario(usuario)
         elif opcion == '3':
             print("👋 Saliendo de la aplicación...")
             break
