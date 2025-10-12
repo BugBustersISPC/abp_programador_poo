@@ -10,13 +10,6 @@ def mock_daos():
     mock_auto_dao = MagicMock()
     mock_disp_dao = MagicMock()
 
-    mock_auto_dao.find_by_accion.return_value = [{"ID_automatizacion": 1, "Accion": "Modo Fiesta", "Estado": False}]
-    mock_auto_dao.set_estado.return_value = True
-    mock_auto_dao.create.return_value = 1
-
-    mock_disp_dao.find_by_nombre.return_value = [{"ID_dispositivo": 1, "Nombre": "Luz Living"}]
-    mock_disp_dao.set_estado.return_value = True
-
     return mock_auto_dao, mock_disp_dao
 
 @pytest.fixture
