@@ -11,11 +11,11 @@ VALUES
 ('Casa Pérez', 'Monseñor José Negro 5421');
 
 INSERT INTO Usuario (Nombre, Apellido, Email, Nombre_rol, Contraseña) 
-VALUES ('Alvaro', 'Carmin', 'alvarocarmin@gmail.com', 'Admin', '421384'),
-('Lucia', 'Carmin', 'luciacarmin@gmail.com', 'Usuario', '723456'),
-('Lisandro', 'Carmin', 'lisandrocarmin@gmail.com', 'Dueño', '421384'),
-('Catalina', 'Moreno', 'catalinamoreno@gmail.com', 'Usuario', '321347'),
-('Juan', 'Perez', 'juanperez@gmail.com', 'Admin', '123543');
+VALUES ('Alvaro', 'Carmin', 'alvarocarmin@gmail.com', 'ADMIN', '421384'),
+('Lucia', 'Carmin', 'luciacarmin@gmail.com', 'USUARIO', '723456'),
+('Lisandro', 'Carmin', 'lisandrocarmin@gmail.com', 'USUARIO', '421384'),
+('Catalina', 'Moreno', 'catalinamoreno@gmail.com', 'ADMIN', '321347'),
+('Juan', 'Perez', 'juanperez@gmail.com', 'ADMIN', '123543');
 
 INSERT INTO Usuario_Vivienda (ID_usuario, ID_vivienda)
 VALUES ('1', '1'), ('2', '2'),('3', '3'),('4', '4'),('5', '5');
