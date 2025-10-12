@@ -1,5 +1,6 @@
 # Archivos de caché y compilados de Python
 __pycache__/
+**/__init__.py
 *.pyc
 *.pyo
 *.pyd
@@ -15,3 +16,5 @@ venv/
 #Variables de entorno
 .env
 config.ini
+
+

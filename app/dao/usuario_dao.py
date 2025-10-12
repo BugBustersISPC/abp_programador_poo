@@ -14,15 +14,17 @@ class UsuarioDAO(InterfaceUsuario):
 
         try:
             cursor = conexion.cursor()
-            query = f'SELECT * FROM Usuario WHERE Email = "{email}"'
-            cursor.execute(query)
-
-            user = Usuario.from_object(cursor.fetchone())
-
+            query = 'SELECT * FROM Usuario WHERE Email = %s'
+            cursor.execute(query,(email,))
+            result = cursor.fetchone()
+            if result is None:
+                return None
+            user = Usuario.from_object(result)
             return user
         except mysql.connector.Error as err:
-            raise f'Error al buscar por email, {err}'
+            raise Exception(f'Error al buscar por email: {err}')
         finally:
+            cursor.close()
             conexion.close()
 
     def get_all(self) -> list[Usuario]:
@@ -37,7 +39,7 @@ class UsuarioDAO(InterfaceUsuario):
 
             return users
         except mysql.connector.Error as err:
-            raise f'Error al obtener todos los elementos, {err}'
+             raise Exception(f'Error al obtener todos los elementos: {err}')
         finally:
             conexion.close()
 
@@ -54,7 +56,7 @@ class UsuarioDAO(InterfaceUsuario):
 
             return id_fila
         except mysql.connector.Error as err:
-            raise f'Error al insertar: {err}'
+               raise Exception(f'Error al insertar: {err}')
         finally:
             conexion.close()
 
@@ -70,7 +72,7 @@ class UsuarioDAO(InterfaceUsuario):
 
             return id_fila
         except mysql.connector.Error as err:
-            raise f'Error al modificar: {err}'
+             raise Exception(f'Error al modificar: {err}')
         finally:
             conexion.close()
 
@@ -93,6 +95,6 @@ class UsuarioDAO(InterfaceUsuario):
 
             return filas_eliminadas
         except mysql.connector.Error as err:
-            raise f'Error al eliminar: {err}'
+             raise Exception(f'Error al eliminar: {err}') 
         finally:
             conexion.close()
