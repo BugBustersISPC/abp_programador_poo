@@ -1,4 +1,5 @@
 Pasos para ejecutar la query sql en un DBMS online como OneCompiler:
+Se debe usar el archivo ONE-COMPILER-Usar-Este.sql para su correcto funcionamiento
 
 Paso 1: Abrir https://onecompiler.com/
 Paso 2: Elegir MySQL
