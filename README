@@ -1,0 +1,73 @@
+# 🏠 ABP Programador POO — Smart Home Console System
+
+## 🚀 Propósito
+El proyecto tiene como objetivo **gestionar dispositivos inteligentes del hogar mediante una interfaz de consola**, aplicando principios de **Programación Orientada a Objetos (POO)** y el **patrón de diseño DAO (Data Access Object)** para separar la lógica de negocio del acceso a datos.  
+Además, busca **simular un sistema de automatización doméstica** que permita administrar usuarios, roles, viviendas, dispositivos y automatizaciones desde una aplicación modular, conectada a una base de datos MySQL.
+
+---
+
+## 🧭 Contexto
+Este desarrollo forma parte del **Módulo Programador**, compuesto por las materias **Programación I** y **Base de Datos I** del **Instituto Superior Politécnico Córdoba (ISPC)**.  
+El trabajo fue desarrollado como **simulación académica**, priorizando las buenas prácticas de programación, modularidad y trabajo colaborativo en entornos distribuidos.
+
+**Detalles técnicos:**
+- Lenguaje: **Python 3.x**
+- Patrón de diseño aplicado: **DAO (Data Access Object)**
+- Base de datos: **MySQL (conexión local)**
+- Entorno de desarrollo: **Visual Studio Code**
+- Control de versiones y colaboración: **GitHub**, coordinación a través de **Discord**
+
+---
+
+## ⚙️ Alcance
+El sistema permite realizar distintas acciones según el tipo de usuario (estándar o administrador), gestionando tanto la información de usuarios como los elementos del entorno inteligente.  
+
+**Funcionalidades principales:**
+- Registro e inicio de sesión de usuarios  
+- Gestión de roles (usuario estándar / administrador)  
+- Gestión de viviendas  
+- Gestión de dispositivos  
+- Gestión de automatizaciones  
+- Conexión con base de datos local  
+- CRUD completo en las gestiones principales  
+
+**Resultados:**
+- Se cumplieron todos los objetivos planteados.  
+- El sistema es completamente funcional y mantiene las pruebas unitarias previas en verde.  
+
+---
+
+## 🧩 Estructura general del proyecto
+```
+ABP Programador POO/
+│
+├── app
+│    ├── conn/              # Manejo de conexión con la base de datos (MySQL)
+│    ├── dao/               # Clases DAO para acceso a datos
+│    │    └── interfaces/   # Interfaces implementadas por las clases DAO
+│    └── dominio/           # Clases del dominio (Usuario, Dispositivo, Vivienda, etc.)
+├── BD-Evidencia-5/         # Scripts SQL (DDL, DML)
+├── BD-Evidencia-6/         # Scripts SQL (DML, consultas multitabla, subconsultas)
+├── Diseño-Evidencia-5/     # Diagramas y documentación de diseño
+├── tests/                  # Pruebas automatizadas con pytest
+├── venv/                   # Entorno virtual de Python
+├── main.py                 # Punto de entrada del programa (interfaz de consola)
+├── pytest.ini              # Configuración de pytest
+└── README                  # Documentación del proyecto
+
+---
+
+## 👥 Autores
+**Equipo de Desarrollo (ISPC - 2025):**
+- **Kevin Agustin Requelme:** Lógica y DAO de Automatizaciones, conexión a la base de datos, menús de usuario estándar y admin.  
+- **Matías Emanuel Sánchez:** Lógica y DAO de Usuario, interfaz de usuario, gestión de dispositivos y modificación de roles.  
+- **Ignacio Moreira:** Lógica y DAO de Vivienda, interfaz de vivienda, gestión de viviendas.  
+- **Genaro Cura:** Lógica y DAO de Ubicación, interfaz de ubicación, registro e inicio de sesión.  
+- **Fausto Santino Fili:** Lógica y DAO de Dispositivo, interfaz de dispositivo.  
+
+---
+
+## 🏫 Institución
+**Instituto Superior Politécnico Córdoba (ISPC)**  
+**Carrera:** Tecnicatura Superior en Desarrollo de Software  
+**Año:** 2025  
