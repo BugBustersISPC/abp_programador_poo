@@ -66,3 +66,6 @@ class Usuario:
             return True
         else:
             return False
+
+    def get_nombre_apellido(self):
+        return f'{self.__nombre} {self.__apellido} - ID: {self.id_usuario}'
