@@ -165,8 +165,21 @@ def gestionar_automatizaciones(db: DBConn):
         else:
             print("Error: Selecciona una opcion correcta")
 
+def parse_tipo_input(valor: str) -> str | None:
+    """conviert entrada de usuario a ENUM válido de la bdd"""
+    v = valor.strip().upper()
+    mapa = {
+        "1": "LUZ", "LUZ": "LUZ",
+        "2": "CAMARA", "CÁMARA": "CAMARA", "CAMARA": "CAMARA",
+        "3": "MUSICA", "MÚSICA": "MUSICA", "MUSICA": "MUSICA",
+    }
+    return mapa.get(v)
+
 
 def gestionar_dispositivos(dispositivo_dao: DispositivoDAO):
+    # Controlador con DAO inyectado
+    ctrl = ControladorDispositivos(dispositivo_dao)
+
     while True:
         print("\n===== Gestión de Dispositivos =====")
         print("1. Listar dispositivos")
@@ -175,45 +188,129 @@ def gestionar_dispositivos(dispositivo_dao: DispositivoDAO):
         print("4. Eliminar dispositivo")
         print("5. Volver al menú anterior")
 
-        opcion = input("Seleccione una opción (1-5): ")
+        opcion = input("Seleccione una opción (1-5): ").strip()
 
         if opcion == "1":
             dispositivos = dispositivo_dao.get_all()
             if not dispositivos:
                 print("No hay dispositivos registrados.")
             else:
+                print("\n--- Dispositivos registrados ---")
                 for d in dispositivos:
                     estado = "Encendido" if d["Estado"] else "Apagado"
-                    print(f"ID: {d['ID_dispositivo']} | Nombre: {d['Nombre']} | Estado: {estado}")
+                    print(f"ID: {d['ID_dispositivo']} | Nombre: {d['Nombre']} | Tipo: {d['Tipo']} | Estado: {estado}")
 
         elif opcion == "2":
-            nombre = input("Nombre del dispositivo: ")
-            estado_str = input("Estado inicial (encendido/apagado): ").lower()
-            estado = estado_str == "encendido"
+            # Crear SIN pedir ID_automatizacion
+            nombre = input("Nombre del dispositivo: ").strip()
+            tipo_in = input("Tipo (1=LUZ, 2=CAMARA, 3=MUSICA o escriba el nombre): ")
+            tipo_enum = parse_tipo_input(tipo_in)
+            if not tipo_enum:
+                print("Tipo inválido.")
+                continue
+
+            estado_str = input("Estado inicial (encendido/apagado): ").strip().lower()
+            estado = (estado_str == "encendido")
+
             try:
-                dispositivo = ControladorDispositivos(nombre=nombre, estado=estado)
-                dispositivo_dao.create(dispositivo)
-                print("Dispositivo creado correctamente.")
+                id_usuario = int(input("ID de usuario (entero): ").strip())
+                id_ubicacion = int(input("ID de ubicación (entero): ").strip())
+            except ValueError:
+                print("ID de usuario/ubicación debe ser número entero.")
+                continue
+
+            marca = input("Marca (opcional): ").strip() or None
+            modelo = input("Modelo (opcional): ").strip() or None
+
+            # Mapear ENUM a int del dominio para validación (1/2/3)
+            if tipo_enum == "LUZ":
+                tipo_int = Dispositivo.TIPO_LUZ
+            elif tipo_enum == "CAMARA":
+                tipo_int = Dispositivo.TIPO_CAMARA
+            else:
+                tipo_int = Dispositivo.TIPO_MUSICA
+
+            try:
+                ok = ctrl.agregar_dispositivo(
+                    nombre=nombre,
+                    tipo=tipo_int,        # el controlador convierte a ENUM de DB
+                    estado=estado,
+                    id_usuario=id_usuario,
+                    id_ubicacion=id_ubicacion,
+                    marca=marca,
+                    modelo=modelo
+                )
+                print("Dispositivo creado correctamente." if ok else "No se pudo crear el dispositivo.")
             except Exception as e:
                 print(f"Error al crear dispositivo: {e}")
 
         elif opcion == "3":
-            id_disp = int(input("Ingrese el ID del dispositivo a actualizar: "))
-            dispositivo = dispositivo_dao.get(id_disp)
-            if not dispositivo:
+            try:
+                id_disp = int(input("Ingrese el ID del dispositivo a actualizar: ").strip())
+            except ValueError:
+                print("ID inválido.")
+                continue
+
+            actual = dispositivo_dao.get_by_id(id_disp)
+            if not actual:
                 print("No se encontró el dispositivo.")
+                continue
+
+            print("Deje vacío para mantener el valor actual.")
+            nuevo_nombre = input(f"Nuevo nombre (actual: {actual['Nombre']}): ").strip() or actual["Nombre"]
+
+            tipo_act = actual["Tipo"]  # ENUM actual
+            tipo_in = input(f"Nuevo tipo (actual: {tipo_act}) (1=LUZ, 2=CAMARA, 3=MUSICA o nombre): ").strip()
+            if tipo_in:
+                tipo_enum = parse_tipo_input(tipo_in)
+                if not tipo_enum:
+                    print("Tipo inválido.")
+                    continue
             else:
-                nuevo_nombre = input(f"Nuevo nombre (actual: {dispositivo.get_nombre()}): ") or dispositivo.get_nombre()
-                estado_str = input(f"Nuevo estado (actual: {'encendido' if dispositivo.get_estado() else 'apagado'}): ").lower()
-                nuevo_estado = dispositivo.get_estado() if estado_str == "" else estado_str == "encendido"
-                dispositivo.set_nombre(nuevo_nombre)
-                dispositivo.set_estado(nuevo_estado)
-                dispositivo_dao.update(dispositivo)
-                print("Dispositivo actualizado correctamente.")
+                tipo_enum = tipo_act
+
+            estado_act = "encendido" if actual["Estado"] else "apagado"
+            estado_in = input(f"Nuevo estado (encendido/apagado) (actual: {estado_act}): ").strip().lower()
+            if estado_in in ("encendido", "apagado"):
+                nuevo_estado = (estado_in == "encendido")
+            else:
+                nuevo_estado = bool(actual["Estado"])
+
+            marca = input(f"Marca (actual: {actual['Marca']}): ").strip() or actual["Marca"]
+            modelo = input(f"Modelo (actual: {actual['Modelo']}): ").strip() or actual["Modelo"]
+
+            try:
+                id_usuario_in = input(f"ID_usuario (actual: {actual['ID_usuario']}): ").strip()
+                id_usuario = int(id_usuario_in) if id_usuario_in else int(actual["ID_usuario"])
+                id_ubicacion_in = input(f"ID_ubicacion (actual: {actual['ID_ubicacion']}): ").strip()
+                id_ubicacion = int(id_ubicacion_in) if id_ubicacion_in else int(actual["ID_ubicacion"])
+            except ValueError:
+                print("ID_usuario/ID_ubicacion deben ser enteros.")
+                continue
+
+            data = {
+                "Nombre": nuevo_nombre,
+                "Marca": marca,
+                "Modelo": modelo,
+                "Tipo": tipo_enum,                 # ENUM de DB
+                "Estado": int(bool(nuevo_estado)),
+                "ID_usuario": id_usuario,
+                "ID_ubicacion": id_ubicacion,
+                "ID_automatizacion": actual["ID_automatizacion"]
+            }
+
+            ok = dispositivo_dao.update(id_disp, data)
+            print("Dispositivo actualizado correctamente." if ok else "No se pudo actualizar el dispositivo.")
 
         elif opcion == "4":
-            id_disp = int(input("Ingrese el ID del dispositivo a eliminar: "))
-            confirm = input("¿Está seguro? (si/no): ").lower()
+            # Eliminar
+            try:
+                id_disp = int(input("Ingrese el ID del dispositivo a eliminar: ").strip())
+            except ValueError:
+                print("ID inválido.")
+                continue
+
+            confirm = input("¿Está seguro? (si/no): ").strip().lower()
             if confirm == "si":
                 ok = dispositivo_dao.delete(id_disp)
                 print("Dispositivo eliminado." if ok else "No se pudo eliminar el dispositivo.")
@@ -224,6 +321,7 @@ def gestionar_dispositivos(dispositivo_dao: DispositivoDAO):
             break
         else:
             print("Opción no válida")
+
 
 
 def gestionar_vivienda(vivienda_dao: ViviendasDAO):
