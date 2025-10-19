@@ -8,7 +8,6 @@ class AutomatizacionDAO(IAutomatizacionDAO):
 
     def __init__(self, db_conn: DBConn):
         self.db_conn = db_conn
-        self.db_name = db_conn.db_config.get("database")
 
 
     def get(self, id_automatizacion: int):
@@ -16,7 +15,7 @@ class AutomatizacionDAO(IAutomatizacionDAO):
 
         try:
             with conn.cursor(dictionary=True) as cursor:
-                query = f"SELECT ID_automatizacion, Accion, Estado FROM {self.db_name}.Automatizacion WHERE ID_automatizacion = %s"
+                query = f"SELECT ID_automatizacion, Accion, Estado FROM Automatizacion WHERE ID_automatizacion = %s"
                 cursor.execute(query, (id_automatizacion,))
                 row = cursor.fetchone()
                 return row
@@ -28,7 +27,7 @@ class AutomatizacionDAO(IAutomatizacionDAO):
 
         try:
             with conn.cursor(dictionary=True) as cursor:
-                query = f"SELECT ID_automatizacion, Accion, Estado FROM {self.db_name}.Automatizacion"
+                query = f"SELECT ID_automatizacion, Accion, Estado FROM Automatizacion"
                 cursor.execute(query, )
                 rows = cursor.fetchall()
                 return rows if rows else []
@@ -40,7 +39,7 @@ class AutomatizacionDAO(IAutomatizacionDAO):
 
         try:
             with conn.cursor() as cursor:
-                query = f"INSERT INTO {self.db_name}.Automatizacion (Accion, Estado) VALUES (%s, %s)"
+                query = f"INSERT INTOAutomatizacion (Accion, Estado) VALUES (%s, %s)"
                 # convertir estado booleano a TINYINT
                 estado_int = 1 if valor.get("Estado") else 0 
                 cursor.execute(query, (valor.get("Accion"),estado_int))
@@ -69,7 +68,7 @@ class AutomatizacionDAO(IAutomatizacionDAO):
                     return False
                     
                 valores.append(id_automatizacion)   
-                query = f"UPDATE {self.db_name}.Automatizacion SET {', '.join(campos)} WHERE ID_automatizacion = %s"  
+                query = f"UPDATE Automatizacion SET {', '.join(campos)} WHERE ID_automatizacion = %s"  
                 cursor.execute(query, tuple(valores))
                 conn.commit()
                 return cursor.rowcount > 0
@@ -82,7 +81,7 @@ class AutomatizacionDAO(IAutomatizacionDAO):
 
         try:
             with conn.cursor() as cursor:
-                query = f"DELETE FROM {self.db_name}.Automatizacion WHERE ID_automatizacion = %s"
+                query = f"DELETE FROM Automatizacion WHERE ID_automatizacion = %s"
                 cursor.execute(query, (id_automatizacion,))
                 conn.commit()
                 return cursor.rowcount > 0
@@ -95,7 +94,7 @@ class AutomatizacionDAO(IAutomatizacionDAO):
 
         try:
             with conn.cursor(dictionary=True) as cursor:
-                query = f"SELECT ID_automatizacion, Accion, Estado FROM {self.db_name}.Automatizacion WHERE Accion = %s"
+                query = f"SELECT ID_automatizacion, Accion, Estado FROM Automatizacion WHERE Accion = %s"
                 cursor.execute(query, (accion,))
                 rows = cursor.fetchall()
                 return rows if rows else []
@@ -107,7 +106,7 @@ class AutomatizacionDAO(IAutomatizacionDAO):
 
         try:
             with conn.cursor() as cursor:
-                query = f"UPDATE {self.db_name}.Automatizacion SET Estado = %s WHERE ID_automatizacion = %s"
+                query = f"UPDATE Automatizacion SET Estado = %s WHERE ID_automatizacion = %s"
                 estado_int = 1 if estado else 0
                 cursor.execute(query, (estado_int, id_automatizacion))
                 conn.commit()
@@ -121,7 +120,7 @@ class AutomatizacionDAO(IAutomatizacionDAO):
 
         try:
             with conn.cursor(dictionary=True) as cursor:
-                query = f"SELECT ID_automatizacion, Accion, Estado FROM {self.db_name}.Automatizacion WHERE Estado = %s"
+                query = f"SELECT ID_automatizacion, Accion, Estado FROM Automatizacion WHERE Estado = %s"
                 estado_int = 1 if estado else 0
                 cursor.execute(query, (estado_int,))
                 rows = cursor.fetchall()
